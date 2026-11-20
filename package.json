@@ -1,0 +1,183 @@
+{
+  "name": "tokenguard",
+  "displayName": "TokenGuard — Live AI Token Cost, Secret Leak Shield & Context Compressor",
+  "description": "Live multi-script AI token & cost meter (GPT-5, Claude Sonnet 4, Gemini 2.5 Pro), one-click reversible secret & PII redactor, inline leak squiggles with Quick Fixes, and lossless JSON @schema context compressor. 100% local, zero dependencies, zero telemetry.",
+  "version": "1.0.0",
+  "publisher": "pecopeko",
+  "license": "MIT",
+  "icon": "assets/icon.png",
+  "galleryBanner": {
+    "color": "#0F172A",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pecopeko/tokenguard-vscode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pecopeko/tokenguard-vscode/issues"
+  },
+  "homepage": "https://github.com/pecopeko/tokenguard-vscode#readme",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Formatters",
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "tokens",
+    "secrets",
+    "cursor",
+    "llm"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "dependencies": {},
+  "scripts": {
+    "test": "node --test test/tokenguard.test.mjs",
+    "package": "node scripts/build_vsix.mjs"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "tokenguard.copySafely",
+        "title": "Copy Selection Safely (Redact Secrets & PII)",
+        "category": "TokenGuard"
+      },
+      {
+        "command": "tokenguard.restoreFromClipboard",
+        "title": "Restore Redacted Tokens from AI Reply",
+        "category": "TokenGuard"
+      },
+      {
+        "command": "tokenguard.compressJson",
+        "title": "Compress JSON for AI Context (@schema)",
+        "category": "TokenGuard"
+      },
+      {
+        "command": "tokenguard.expandSchema",
+        "title": "Expand @schema Back to JSON",
+        "category": "TokenGuard"
+      },
+      {
+        "command": "tokenguard.showTokenBreakdown",
+        "title": "Show Live Token & Multi-Model Cost Breakdown",
+        "category": "TokenGuard"
+      },
+      {
+        "command": "tokenguard.clearVault",
+        "title": "Clear Session Redaction Vault",
+        "category": "TokenGuard"
+      },
+      {
+        "command": "tokenguard.enterLicenseKey",
+        "title": "Activate / Manage License Key",
+        "category": "TokenGuard Pro"
+      },
+      {
+        "command": "tokenguard.proWorkspaceBudget",
+        "title": "Workspace Context Budget & Cost Report",
+        "category": "TokenGuard Pro"
+      },
+      {
+        "command": "tokenguard.proWorkspaceAudit",
+        "title": "Pre-Commit / Workspace Secret & PII Audit Report",
+        "category": "TokenGuard Pro"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "tokenguard.copySafely",
+          "when": "editorHasSelection",
+          "group": "tokenguard@1"
+        },
+        {
+          "command": "tokenguard.restoreFromClipboard",
+          "group": "tokenguard@2"
+        },
+        {
+          "command": "tokenguard.compressJson",
+          "when": "editorHasSelection",
+          "group": "tokenguard@3"
+        },
+        {
+          "command": "tokenguard.expandSchema",
+          "when": "editorHasSelection",
+          "group": "tokenguard@4"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "tokenguard.copySafely",
+        "key": "ctrl+alt+c",
+        "mac": "cmd+alt+c",
+        "when": "editorTextFocus && editorHasSelection"
+      },
+      {
+        "command": "tokenguard.restoreFromClipboard",
+        "key": "ctrl+alt+v",
+        "mac": "cmd+alt+v",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "tokenguard.compressJson",
+        "key": "ctrl+alt+j",
+        "mac": "cmd+alt+j",
+        "when": "editorTextFocus && editorHasSelection"
+      }
+    ],
+    "configuration": {
+      "title": "TokenGuard",
+      "properties": {
+        "tokenguard.defaultModel": {
+          "type": "string",
+          "default": "claude-sonnet-4",
+          "enum": [
+            "gpt-5",
+            "claude-sonnet-4",
+            "gemini-2.5-pro",
+            "gpt-4o-mini",
+            "claude-haiku-4.5",
+            "gemini-2.5-flash"
+          ],
+          "description": "Default LLM model displayed in the live TokenGuard status bar cost meter."
+        },
+        "tokenguard.enableLiveDiagnostics": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show live editor warning squiggles and Quick Fixes for hardcoded secrets."
+        },
+        "tokenguard.diagnostics.ignoreTestFiles": {
+          "type": "boolean",
+          "default": true,
+          "description": "Skip live secret squiggles inside test, spec, mock, and fixture file paths."
+        },
+        "tokenguard.diagnostics.includePii": {
+          "type": "boolean",
+          "default": false,
+          "description": "Also flag PII (emails, IPv4s, phone numbers, Japanese MyNumber) in live editor squiggles. Safe Prompt Copy always redacts both secrets and PII."
+        },
+        "tokenguard.statusBar.debounceMs": {
+          "type": "integer",
+          "default": 200,
+          "minimum": 20,
+          "maximum": 2000,
+          "description": "Debounce interval (milliseconds) for live status bar token and cost updates."
+        },
+        "tokenguard.proCheckoutUrl": {
+          "type": "string",
+          "default": "https://github.com/pecopeko/tokenguard-vscode#tokenguard-pro",
+          "description": "URL opened when clicking 'Get TokenGuard Pro' in the upgrade dialog."
+        }
+      }
+    }
+  }
+}

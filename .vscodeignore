@@ -1,0 +1,13 @@
+.git/**
+.gitignore
+.vscode/**
+.vscodeignore
+.DS_Store
+*.vsix
+*.pem
+*.key
+node_modules/**
+tools/**
+scripts/**
+test/**
+MARKETPLACE_PUBLISH_GUIDE.md
